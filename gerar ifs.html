@@ -1,0 +1,12 @@
+<head>
+</head>
+<body>
+	<script>
+		var alternativaA=prompt('Alternativa A: ');
+		var alternativaB=prompt('Alternativa B: ');
+		var alternativaC=prompt('Alternativa C: ');
+		var alternativaD=prompt('Alternativa D: ');
+		var formula="=SE(D3=\"\";\" \";SE(D3=\""+alternativaA+"\";\"A\";SE(D3=\""+alternativaB+"\";\"B\";SE(D3=\""+alternativaC+"\";\"C\";SE(D3=\""+alternativaA+"\";\"D\";\"E\")))))";
+		alert(formula);
+	</script>
+</body>

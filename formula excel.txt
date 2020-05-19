@@ -1,0 +1,1 @@
+=SE(D3="utilizar um texto extremamente formal e rebuscado.";"A";SE(D3="insinuar que seu mais importante produto seja caseiro.";"B";SE(D3="usar vocábulos de baixo calão em um contexto formal.";"C";SE(D3="evidenciar ao leitor a alta artificialidade dos fast foods.";"D";"E"))))
