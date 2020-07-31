@@ -1,0 +1,196 @@
+<head>
+    <title>Geração de formulas </title>
+</head>
+<style>
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 18px;
+        background-color: chocolate;
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    body>h1{
+        color: white;
+    }
+
+    .form{
+        padding: 3% 2% 5% 2%;
+        background-color: white;
+    }
+
+    .simulado, .arquivo, .quantidade{
+        font-size: 24px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        padding-bottom: 20px;
+    }
+    
+    .simulado select{
+        margin-left: 20px;
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .quantidade input{
+        margin-left: 20px;
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn {
+        border: 2px solid black;
+        color: #323233;
+        background-color: white;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .btn:hover {
+        cursor: pointer;
+        transition-duration: 0.3s;
+        color: tomato;
+        background-color: azure;
+    }
+    input[type=file]:hover {
+        cursor: pointer;
+        transition-duration: 0.3s;
+        color: tomato;
+        background-color: azure;
+    }
+
+    .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+</style>
+<body>
+    <h1>Geração de Formulas de Conversão - Simulados</h1><br/>
+    <div class="form">
+        <div class="simulado">
+            <label>Simulado: </label>
+            <select name="" id="simulado">
+                <option value=""></option>
+                <option value="IFRN">IFRN</option>
+                <option value="ENEM">ENEM</option>
+            </select><br/>
+        </div>
+        <div class="arquivo">
+            <label>Arquivo de gabarito: </label>
+            <div class="upload-btn-wrapper">
+                <button class="btn">Escolher gabarito</button>
+                <input type="file" name="" id="arquivo" />
+                <input type="file" name="myfile" id="arquivo" />
+                <br/>
+            </div>
+        </div>
+        <div class="quantidade">
+            <label>Quantidade de alunos: </label>
+            <input type="text" value="" id="qtd"><br/>
+          
+        </div>
+        <input type="button" class="btn" value="Converter" id="ok">
+    </div>
+    <input type="text" value="Hello World" id="myInput" hidden>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+ 
+    <script>
+        var myFile;
+        var conteudo="";
+        $("#ok").click(function() {
+            var simuladoSelecionado = $("#simulado option:selected").text();
+            if(simuladoSelecionado == ""){
+                alertify.alert('Simulado não selecionado', 'Escolha uma das opções.');
+            }else{
+                myFile = $('#arquivo').prop('files');
+                var e = $("#arquivo");
+                if(myFile.length > 0){
+                const reader = new FileReader();
+                reader.onload = function fileReadCompleted() {
+                // when the reader is done, the content is in reader.result.
+                conteudo=reader.result;
+                const linhas = conteudo.split('\n');
+                if(simuladoSelecionado == "IFRN"){
+                    gerarFormulas(linhas, 10, 4);
+                }
+                if(simuladoSelecionado == "ENEM"){
+                    gerarFormulas(linhas, 10, 5);
+                }
+            }
+            reader.readAsText(myFile[0]);
+            }else{
+                alertify.alert('Arquivo não selecionado', 'Selecione o gabarito do simulado');
+            }
+        }
+    }
+
+        );
+
+      function gerarFormulas(linhas,tamanho,col){
+        let formulas=[];
+        let resultado = "";
+        if(linhas.length == tamanho){
+                        linhas.forEach(linha => {
+                            const alternativas = linha.split(";");
+                            if(alternativas.length == col){
+                                var alternativaA=alternativas[0];
+                                var alternativaB=alternativas[1];
+                                var alternativaC=alternativas[2];
+                                var alternativaD=alternativas[3];
+
+                                if(col==4){
+                                    var formula="=SE(D3=\"\";\" \";SE(D3=\""+alternativaA+"\";\"A\";SE(D3=\""+alternativaB+"\";\"B\";SE(D3=\""+alternativaC+"\";\"C\";\"D\"))))";
+                                }else{
+                                    var formula="=SE(D3=\"\";\" \";SE(D3=\""+alternativaA+"\";\"A\";SE(D3=\""+alternativaB+"\";\"B\";SE(D3=\""+alternativaC+"\";\"C\";SE(D3=\""+alternativaA+"\";\"D\";\"E\")))))";
+                                }
+                                resultado+=formula+" 	";
+                                formulas.push(formula);
+                            }
+                        });
+                        var copyText = document.getElementById("myInput");
+                        copyText.value = resultado;
+                        /* Select the text field */
+                        copyText.select();
+                        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                        /* Copy the text inside the text field */
+                        document.execCommand("copy");
+
+                        /* Alert the copied text */
+                        alertify.alert('Sucesso', 'Geração de formulas de conversão realizada com sucesso\nFormulas copiadas para área de clipboard.');
+                    }else{
+                        alert("Quantidade de linhas no gabarito: "+linhas.length+`, necessario ter exatamente ${tamanho} linhas.`);
+                        alertify.alert('Erro', "Quantidade de linhas no gabarito: "+linhas.length+`, necessario ter exatamente ${tamanho} linhas.`);
+                        
+                    }
+      }
+
+    </script>
+</body>
