@@ -1,0 +1,10 @@
+AlternativaA;AlternativaB;AlternativaC;AlternativaD
+AlternativaA;AlternativaB;AlternativaC;AlternativaD
+AlternativaA;AlternativaB;AlternativaC;AlternativaD
+AlternativaA;AlternativaB;AlternativaC;AlternativaD
+AlternativaA;AlternativaB;AlternativaC;AlternativaD
+AlternativaA;AlternativaB;AlternativaC;AlternativaD
+AlternativaA;AlternativaB;AlternativaC;AlternativaD
+AlternativaA;AlternativaB;AlternativaC;AlternativaD
+AlternativaA;AlternativaB;AlternativaC;AlternativaD
+AlternativaA;AlternativaB;AlternativaC;AlternativaD

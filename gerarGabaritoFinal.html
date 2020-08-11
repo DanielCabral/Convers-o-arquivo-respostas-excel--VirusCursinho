@@ -1,5 +1,5 @@
 <head>
-    <title>Geração de formulas </title>
+    <title>Geração de Gabarito Final</title>
     <!-- CSS -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
     <!-- Default theme -->
@@ -45,7 +45,7 @@
         align-items: center;
         justify-content: center;
         flex-direction: row;
-        padding-bottom: 20px;
+        padding-bottom: 45px;
     }
     
     .simulado select{
@@ -101,7 +101,7 @@
     }
 </style>
 <body>
-    <h1>Geração de Formulas de Conversão de Simulados</h1><br/>
+    <h1>Geração de Gabaritos Finais</h1><br/>
     <div class="form">
         <div class="simulado">
             <label>Simulado: </label>
@@ -113,18 +113,14 @@
         </div>
 
         <div class="arquivo">
-            <label>Arquivo de gabarito: </label>
+            <label>Arquivo de resultados: </label>
             <div class="upload-btn-wrapper">
                 <button class="btn" id="btnFile">Escolher gabarito</button>
-                <input type="file" name="myfile" id="arquivo" accept=".txt"/>
+                <input type="file" name="myfile" id="arquivo" accept=".csv"/>
                 <br/>
             </div>
         </div>
         
-        <div class="quantidade">
-            <label>Quantidade de alunos: </label>
-            <input type="text" value="" id="qtd"><br/>
-        </div>
 
         <div class="acao">
             <input type="button" class="btn" value="Converter" id="ok">
@@ -175,23 +171,12 @@
       function gerarFormulas(linhas,tamanho,col){
         let formulas=[];
         let resultado = "";
-        if(linhas.length == tamanho){
                         linhas.forEach(linha => {
-                            const alternativas = linha.split(";");
-                            if(alternativas.length == col){
-                                var alternativaA=alternativas[0];
-                                var alternativaB=alternativas[1];
-                                var alternativaC=alternativas[2];
-                                var alternativaD=alternativas[3];
-
-                                if(col==4){
-                                    var formula="=SE(D3=\"\";\" \";SE(D3=\""+alternativaA+"\";\"A\";SE(D3=\""+alternativaB+"\";\"B\";SE(D3=\""+alternativaC+"\";\"C\";\"D\"))))";
-                                }else{
-                                    var formula="=SE(D3=\"\";\" \";SE(D3=\""+alternativaA+"\";\"A\";SE(D3=\""+alternativaB+"\";\"B\";SE(D3=\""+alternativaC+"\";\"C\";SE(D3=\""+alternativaA+"\";\"D\";\"E\")))))";
-                                }
-                                resultado+=formula+" 	";
-                                formulas.push(formula);
-                            }
+                            let respostas = linha.substring(19,linha.length);
+                            const result = respostas.split(";").join(",");
+                            linha= linha.substring(0,19)+";;"+result+";";
+                            resultado += linha.substring(0,19)+";;"+result+";";
+                            console.log(linha+"\n");
                         });
                         console.log(resultado);
                         var copyText = document.getElementById("myInput");
@@ -205,11 +190,6 @@
 
                         /* Alert the copied text */
                         alertify.alert('Sucesso', 'Geração de formulas de conversão realizada com sucesso\nFormulas copiadas para área de clipboard.');
-                    }else{
-                        alert("Quantidade de linhas no gabarito: "+linhas.length+`, necessario ter exatamente ${tamanho} linhas.`);
-                        alertify.alert('Erro', "Quantidade de linhas no gabarito: "+linhas.length+`, necessario ter exatamente ${tamanho} linhas.`);
-                        
-                    }
       }
 
     </script>
